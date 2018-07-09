@@ -2,6 +2,7 @@ package com.test.testh264player.mediacodec;
 
 import android.media.MediaCodec;
 import android.media.MediaFormat;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
@@ -16,8 +17,8 @@ import java.nio.ByteBuffer;
 
 public class VIdeoMediaCodec {
     private MediaCodec mCodec;
-    private static final int VIDEO_WIDTH = 1920;
-    private static final int VIDEO_HEIGHT = 1080;
+    private static final int VIDEO_WIDTH = 1280;
+    private static final int VIDEO_HEIGHT = 720;
     private int FrameRate = 30;
     private boolean useSpsPPs = false;
     private SurfaceHolder mHolder;
@@ -37,6 +38,8 @@ public class VIdeoMediaCodec {
             mCodec = MediaCodec.createDecoderByType("video/avc");
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("Yuri", "initialCodec.error:" + e.getMessage());
+            return;
         }
         //初始化编码器
         final MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", VIDEO_WIDTH, VIDEO_HEIGHT);
@@ -45,6 +48,7 @@ public class VIdeoMediaCodec {
             mediaformat.setByteBuffer("csd-0", ByteBuffer.wrap(header_sps));
             mediaformat.setByteBuffer("csd-1", ByteBuffer.wrap(header_pps));
         }
+        Log.d("Yuri", "initialCodec.setFrame");
         //设置帧率
         mediaformat.setInteger(MediaFormat.KEY_FRAME_RATE, FrameRate);
         //https://developer.android.com/reference/android/media/MediaFormat.html#KEY_MAX_INPUT_SIZE
@@ -53,6 +57,7 @@ public class VIdeoMediaCodec {
         //surface	指定一个surface，可用作decode的输出渲染。
         //crypto	如果需要给媒体数据加密，此处指定一个crypto类.
         //   flags	如果正在配置的对象是用作编码器，此处加上CONFIGURE_FLAG_ENCODE 标签。
+        Log.d("Yuri", "initialCodec.configure");
         mCodec.configure(mediaformat, mHolder.getSurface(), null, 0);
     }
 

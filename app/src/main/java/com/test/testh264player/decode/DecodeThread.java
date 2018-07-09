@@ -27,7 +27,8 @@ public class DecodeThread extends Thread {
 
     public DecodeThread(MediaCodec mediaCodec, NormalPlayQueue playQueue) {
         this.playQueue = playQueue;
-        audioPlay = new AudioPlay();
+//        audioPlay = new AudioPlay();
+        audioPlay = null;
         videoPlay = new VideoPlay(mediaCodec);
     }
 

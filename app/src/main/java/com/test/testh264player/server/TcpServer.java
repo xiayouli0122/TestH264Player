@@ -1,9 +1,12 @@
 package com.test.testh264player.server;
 
 import android.util.Log;
+import android.widget.Toast;
 
+import com.test.testh264player.MyApplication;
 import com.test.testh264player.interf.OnAcceptBuffListener;
 import com.test.testh264player.interf.OnAcceptTcpStateChangeListener;
+import com.yuri.xlog.XLog;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -19,7 +22,7 @@ import java.net.Socket;
 
 public class TcpServer {
     private ServerSocket serverSocket;
-    private int tcpPort = 11111;
+    private int tcpPort = 12434;
     private boolean isAccept = true;
     private OnAcceptBuffListener mListener;
     private OnAcceptTcpStateChangeListener mConnectListener;
@@ -40,8 +43,11 @@ public class TcpServer {
                         acceptH264MsgThread = new AcceptH264MsgThread(socket.getInputStream(), socket.getOutputStream(), mListener, mConnectListener);
                         acceptH264MsgThread.start();
                     }
+
+                    XLog.d("start server success");
                 } catch (Exception e) {
-                    Log.e("TcpServer", "" + e.toString());
+                    XLog.d("startServer.err:" + e.getMessage());
+                    XLog.e(e);
                 }
 
             }
@@ -68,6 +74,8 @@ public class TcpServer {
                     if (serverSocket != null) serverSocket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    XLog.d("startServer.err:" + e.getMessage());
+                    XLog.e(e);
                 }
             }
         }.start();
