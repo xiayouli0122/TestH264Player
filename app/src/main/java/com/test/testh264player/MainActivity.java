@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.test.testh264player.bean.Frame;
@@ -30,13 +31,14 @@ import qiu.niorgai.StatusBarCompat;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private SurfaceView mSurface = null;
-    private SurfaceHolder mSurfaceHolder;
     private DecodeThread mDecodeThread;
 
     private NormalPlayQueue mPlayqueue;
     private TcpServer tcpServer;
     private VIdeoMediaCodec VIdeoMediaCodec;
     private FileOutputStream fos;
+
+    private ImageView mTestImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +47,32 @@ public class MainActivity extends AppCompatActivity {
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
 
-        StatusBarCompat.translucentStatusBar(this);
+//        StatusBarCompat.translucentStatusBar(this);
 
         XLog.startSaveToFile();
 
         mSurface = findViewById(R.id.surfaceview);
+        mTestImageView = findViewById(R.id.iv_test_image);
 
-        findViewById(R.id.btn_start_service)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startLoad();
-                    }
-                });
+        findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTestImageView.bringToFront();
+            }
+        });
+
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSurface.bringToFront();
+            }
+        });
 
         startLoad();
 
-        mSurfaceHolder = mSurface.getHolder();
-        mSurfaceHolder.addCallback(new SurfaceHolder.Callback() {
+
+        SurfaceHolder surfaceHolder = mSurface.getHolder();
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 initialMediaCodec(holder);
