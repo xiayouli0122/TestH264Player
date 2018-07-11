@@ -42,7 +42,7 @@ public class VIdeoMediaCodec {
             return;
         }
         //初始化编码器
-        final MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", VIDEO_WIDTH, VIDEO_HEIGHT);
+        final MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 640, 360);
         //获取h264中的pps及sps数据
         if (useSpsPPs) {
             mediaformat.setByteBuffer("csd-0", ByteBuffer.wrap(header_sps));
